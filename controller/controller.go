@@ -40,6 +40,11 @@ func (c *Controller) HandleCreateLink(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusBadRequest, "Failed to decode request JSON")
 		return
 	}
+	if !internal.IsValidUrl(req.Url) {
+		respondWithError(w, http.StatusBadRequest, "Invalid URL")
+		return
+	}
+
 	shortLink := internal.GenerateRandomString()
 	log.Println(shortLink, req.Url)
 	link, err := c.DB.CreateLink(r.Context(), database.CreateLinkParams{
