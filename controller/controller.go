@@ -66,5 +66,15 @@ func (c *Controller) HandleQueryLink(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *Controller) HandleRedirectLink(w http.ResponseWriter, r *http.Request) {
-
+	shortLink := r.PathValue("id")
+	if shortLink == "" {
+		respondWithError(w, http.StatusBadRequest, "Invalid request URL")
+		return
+	}
+	link, err := c.DB.GetByShortLink(r.Context(), shortLink)
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "Failed to find short link")
+		return
+	}
+	http.Redirect(w, r, link.FullLink, http.StatusTemporaryRedirect)
 }
