@@ -6,3 +6,8 @@ RETURNING *;
 -- name: GetByShortLink :one
 SELECT * FROM links
 WHERE short_link = $1;
+
+-- name: UpdateLinkCounter :exec
+UPDATE links
+SET counter = counter + 1
+WHERE short_link = $1;

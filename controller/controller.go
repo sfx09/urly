@@ -81,6 +81,12 @@ func (c *Controller) HandleRedirectLink(w http.ResponseWriter, r *http.Request) 
 		respondWithError(w, http.StatusBadRequest, "Invalid request URL")
 		return
 	}
+	// TODO: Validate short link exists
+	err := c.DB.UpdateLinkCounter(r.Context(), shortLink)
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, "Failed to update database")
+		return
+	}
 	link, err := c.DB.GetByShortLink(r.Context(), shortLink)
 	if err != nil {
 		respondWithError(w, http.StatusBadRequest, "Failed to find short link")
