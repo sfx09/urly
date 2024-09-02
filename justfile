@@ -4,6 +4,10 @@ run:
   sqlc generate
   go run .
 
+build:
+  sqlc generate
+  go build .
+
 watch:
   watchexec --exts '.go' just run
 

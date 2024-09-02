@@ -27,11 +27,12 @@ func main() {
 		Addr:    ":" + port,
 		Handler: mux,
 	}
-	mux.HandleFunc("POST /create", c.HandleCreateLink)
-	mux.HandleFunc("GET /query/{id}", c.HandleQueryLink)
-	mux.HandleFunc("GET /{id}", c.HandleRedirectLink)
+	mux.HandleFunc("POST /create", c.HandleLogging(c.HandleCreateLink))
+	mux.HandleFunc("GET /query/{id}", c.HandleLogging(c.HandleQueryLink))
+	mux.HandleFunc("GET /{id}", c.HandleLogging(c.HandleRedirectLink))
 
 	go c.GarbageCollector()
+	log.Println("Initiating listener")
 	err = server.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)

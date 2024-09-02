@@ -11,6 +11,13 @@ import (
 	"github.com/sfx09/urly/internal"
 )
 
+func (c *Controller) HandleLogging(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		log.Println(r.RequestURI)
+		next(w, r)
+	}
+}
+
 func (c *Controller) HandleCreateLink(w http.ResponseWriter, r *http.Request) {
 	type Request struct {
 		Url string `json:"url"`
@@ -28,7 +35,6 @@ func (c *Controller) HandleCreateLink(w http.ResponseWriter, r *http.Request) {
 	}
 
 	shortLink := internal.GenerateRandomString()
-	log.Println(shortLink, req.Url)
 	link, err := c.DB.CreateLink(r.Context(), database.CreateLinkParams{
 		ID:        uuid.New(),
 		CreatedAt: time.Now().UTC(),
