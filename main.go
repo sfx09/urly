@@ -31,6 +31,7 @@ func main() {
 	mux.HandleFunc("GET /query/{id}", c.HandleQueryLink)
 	mux.HandleFunc("GET /{id}", c.HandleRedirectLink)
 
+	go c.GarbageCollector()
 	err = server.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)

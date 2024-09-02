@@ -11,3 +11,7 @@ WHERE short_link = $1;
 UPDATE links
 SET counter = counter + 1, updated_at = $2
 WHERE short_link = $1;
+
+-- name: DeleteExpiredLinks :exec
+DELETE FROM links
+WHERE AGE(updated_at) > INTERVAL '1 hours';
