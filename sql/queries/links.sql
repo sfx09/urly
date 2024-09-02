@@ -9,5 +9,5 @@ WHERE short_link = $1;
 
 -- name: UpdateLinkCounter :exec
 UPDATE links
-SET counter = counter + 1
+SET counter = counter + 1, updated_at = $2
 WHERE short_link = $1;

@@ -82,7 +82,10 @@ func (c *Controller) HandleRedirectLink(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	// TODO: Validate short link exists
-	err := c.DB.UpdateLinkCounter(r.Context(), shortLink)
+	err := c.DB.UpdateLinkCounter(r.Context(), database.UpdateLinkCounterParams{
+		ShortLink: shortLink,
+		UpdatedAt: time.Now().UTC(),
+	})
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Failed to update database")
 		return
